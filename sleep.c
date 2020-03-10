@@ -1,7 +1,10 @@
 // Copyright 2020 Tobias Hueldau. All Rights Reserved.
 // SPDX-License-Identifier: MIT
-#include <stdio.h>
 #include <unistd.h>
+
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 
 // str2uint - parses string into unsigned integer
 // Arguments:
@@ -71,13 +74,13 @@ int main(int argc, char *argv[]) {
                 return 0;
                 break;
             case 3:
-                printf("Argument too large, max value is %u.\n",(unsigned) -1);
+                write(1,"Argument too large, max value is 4294967295.\n",45);
                 break;
             default:
-                printf("Error parsing argument, must be positive integer.\n");
+                write(1,"Error parsing argument, must be positive integer.\n",50);
         }
         return 1;
     }
-    printf("Usage: %s <seconds>\n",argv[0]);
+    write(1,"Usage: sleep <seconds>\n",23);
     return 1;
 }
