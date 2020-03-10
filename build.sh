@@ -1,15 +1,24 @@
 #!/bin/sh
 
-#test if musl libc is availalbe
-#using musl libc will result in significantly smaller binary
-#on ubnuntu install via: apt install musl musl-dev musl-tools
-#see https://musl.libc.org
-which musl-gcc >/dev/null
+#Smallest binary size with dietlibc
+#Install on Ubuntu via: apt install dietlibc-dev
+#See also: https://www.fefe.de/dietlibc/
 
-if [ $? -eq 0 ] ; then
-	compiler=musl-gcc
+#Second smallest binary size with musl libc
+#Install on Ubuntu via: apt install musl musl-dev musl-tools
+#See https://musl.libc.org
+
+if [ -x "`which diet`" ] ; then
+	compiler="diet gcc"
+elif [ -x "`which musl-gcc`" ] ; then
+	compiler="musl-gcc"
 else
-	compiler=cc
+	compiler="cc"
 fi
-	
-$compiler sleep.c -o sleep -static -s -Wall -Os
+
+cmd="$compiler -Wl,-z,noseparate-code -pipe -s -fno-ident -Wl,-z,norelro -Wl,--build-id=none -static -Os -Wall -o sleep sleep.c"
+echo $cmd
+${cmd}
+cmd="strip -x -R .comment -R .note sleep"
+echo $cmd
+${cmd}
