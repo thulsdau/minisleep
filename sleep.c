@@ -58,11 +58,12 @@ int str2uint(const char *str, unsigned *return_value) {
 }
 
 int main(int argc, char *argv[]) {
+    int error;
     if (argc == 2) {
 
 	//convert first argument to integer
         unsigned seconds = 0;
-        int error = str2uint(argv[1],&seconds);
+        error = str2uint(argv[1],&seconds);
 
         switch (error)
         {
@@ -74,13 +75,13 @@ int main(int argc, char *argv[]) {
                 return 0;
                 break;
             case 3:
-                write(1,"Argument too large, max value is 4294967295.\n",45);
+                error = write(1,"Argument too large, max value is 4294967295.\n",45);
                 break;
             default:
-                write(1,"Error parsing argument, must be positive integer.\n",50);
+                error = write(1,"Error parsing argument, must be positive integer.\n",50);
         }
         return 1;
     }
-    write(1,"Usage: sleep <seconds>\n",23);
+    error = write(1,"Usage: sleep <seconds>\n",23);
     return 1;
 }
