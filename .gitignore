@@ -1,5 +1,7 @@
 # Compiled Executable
 sleep
+# Docker image(s)
+Dockerimage/
 
 # Prerequisites
 *.d
